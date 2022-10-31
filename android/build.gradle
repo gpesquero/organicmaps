@@ -334,13 +334,15 @@ android {
       signingConfig signingConfigs.debug
       resValue 'string', 'app_id', android.defaultConfig.applicationId + applicationIdSuffix
       resValue 'string', 'app_name', project.ext.appName  + ' ' + '(Debug)'
-      // Do not generate separate debug symbols for debug apps, because we don't distribute them.
-      ndk.debugSymbolLevel = 'none'
 
       if (googleFirebaseServicesEnabled) {
+        ndk.debugSymbolLevel = 'symbol_table'
         firebaseCrashlytics {
           nativeSymbolUploadEnabled true
         }
+      } else {
+        // Do not generate separate debug symbols for debug apps, because we don't distribute them.
+        ndk.debugSymbolLevel = 'none'
       }
     }
 
