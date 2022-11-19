@@ -1,0 +1,38 @@
+• Szczegółowe mapy offline z miejscami, które nie istnieją na innych mapach
+• Trasy rowerowe, szlaki turystyczne, ścieżki spacerowe
+• Linie konturowe, profile wysokościowe, szczyty i zbocza
+• Nawigacja piesza, rowerowa i samochodowa typu "turn-by-turn" ze wskazówkami głosowymi
+• Szybkie wyszukiwanie w trybie offline
+• Zapisz wszystko czego potrzebujesz, importuj i udostępniaj KML/KMZ (planowany jest GPX)
+• Tryb ciemny, aby chronić Twoje oczy
+
+Organic Maps jest <b>czyste i organiczne, wykonane z miłością</b>:
+
+• Szanuje Twoją prywatność
+• Oszczędza baterię
+• Brak niespodziewanych opłat za transmisję danych w sieci komórkowej
+
+Wolny od elementów śledzących i innych złych rzeczy:
+
+• Brak reklam
+• Brak śledzenia
+• Brak zbierania danych
+• Brak telemetrii
+• Brak irytującej rejestracji
+• Brak obowiązkowych samouczków
+• Brak hałaśliwego spamu e-mailowego
+• Żadnych powiadomień typu push
+• Brak 💩 oprogramowania
+• B̶r̶a̶k̶ ̶p̶e̶s̶t̶y̶c̶y̶d̶ó̶w
+
+W Organic Maps wierzymy, że <b>prywatność jest podstawowym prawem człowieka</b>:
+
+• Organic Maps to niezależny projekt prowadzony przez społeczność.
+• Kod źródłowy jest otwarty
+• Dane map pochodzą z OpenStreetMap, również projektu tworzonego przez społeczność.
+• Chronimy prywatność przed wścibskimi oczami Big Tech.
+• Bądź bezpieczny bez względu na to, gdzie jesteś
+
+Odrzuć inwigilację - przyjmij swoją wolność oraz wspomóż społeczność.
+
+Wypróbuj Organic Maps!
