@@ -4,23 +4,26 @@
 #include "platform/measurement_utils.hpp"
 #include "platform/settings.hpp"
 
-#include <algorithm>
+#include <iostream>
 
 namespace platform
 {
-std::string MakeDistanceStr(std::string value, Distance::Units unit)
+std::string MakeDistanceStr(Locale loc, std::string value, Distance::Units unit)
 {
-  static Locale const loc = GetCurrentLocale();
-
   constexpr char kHardCodedGroupingSeparator = ',';
+  constexpr char kHardCodedDecimalSeparator = '.';
+
   if (auto found = value.find(kHardCodedGroupingSeparator); found != std::string::npos)
     value.replace(found, 1, loc.m_groupingSeparator);
-
-  constexpr char kHardCodedDecimalSeparator = '.';
-  if (auto found = value.find(kHardCodedDecimalSeparator); found != std::string::npos)
+  else if (found = value.find(kHardCodedDecimalSeparator); found != std::string::npos)
     value.replace(found, 1, loc.m_decimalSeparator);
 
   return value.append(kNarrowNonBreakingSpace).append(DebugPrint(unit));
+}
+
+std::string MakeDistanceStr(std::string value, Distance::Units unit)
+{
+  return MakeDistanceStr(GetCurrentLocale(), value, unit);
 }
 
 struct ScopedSettings
@@ -78,19 +81,60 @@ UNIT_TEST(Distance_CreateFormatted)
 
 UNIT_TEST(Distance_CreateAltitudeFormatted)
 {
+  using enum measurement_utils::Units;
   using enum Distance::Units;
-  {
-    ScopedSettings const guard(measurement_utils::Units::Metric);
 
-    TEST_EQUAL(Distance::FormatAltitude(5), MakeDistanceStr("5", Meters), ());
-    TEST_EQUAL(Distance::FormatAltitude(-8849), MakeDistanceStr("-8849", Meters), ());
-    TEST_EQUAL(Distance::FormatAltitude(12345), MakeDistanceStr("12,345", Meters), ());
-  }
+  struct LocaleData
   {
-    ScopedSettings const guard(measurement_utils::Units::Imperial);
+    std::string localeName;
+  };
 
-    TEST_EQUAL(Distance::FormatAltitude(10000), MakeDistanceStr("32,808", Feet), ());
+  LocaleData localeData[] = {
+    // Locale name
+    { "en_US.UTF-8" },
+    { "es_ES.UTF-8" },
+    { "fr_FR.UTF-8" },
+    { "ru_RU.UTF-8" }
+  };
+
+  struct TestData
+  {
+    double fromAltitude;
+    measurement_utils::Units fromUnits;
+    std::string toAltitude;
+    Distance::Units toUnits;
+  };
+
+  for (auto const & [localeName] : localeData)
+  {
+    Locale loc;
+
+    if (!GetLocale(localeName, loc))
+    {
+      std::cout << "Locale '" << localeName << "' not found!! Skipping test..." << std::endl;
+      continue;
+    }
+
+    TestData testData[] = {
+      { 5,     Metric,   "5",      Meters },
+      { -8849, Metric,   "-8849",  Meters },
+      { 12345, Metric,   "12,345", Meters },
+      { 10000, Imperial, "32,808", Feet }
+    };
+
+    measurement_utils::SetSystemLocale(loc);
+
+    for (auto const & [fromAltitude, fromUnits, toAltitude, toUnits] : testData)
+    {
+      ScopedSettings const guard(fromUnits);
+
+      TEST_EQUAL(Distance::FormatAltitude(fromAltitude),
+                 MakeDistanceStr(loc, toAltitude, toUnits), ());
+    }
   }
+
+  // Restore initial system locale.
+  measurement_utils::RefreshSystemLocale();
 }
 
 UNIT_TEST(Distance_IsLowUnits)
