@@ -56,6 +56,12 @@
           android:layout_height="wrap_content"
           android:orientation="vertical"
           android:layout_weight="1">
+
+            <androidx.recyclerview.widget.RecyclerView
+              android:id="@+id/route_plan_list"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content" />
+
             <ImageView
               android:id="@+id/altitude_chart"
               android:layout_height="wrap_content"

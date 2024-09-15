@@ -65,6 +65,13 @@ double Route::GetTotalDistanceMeters() const
   return m_poly.GetTotalDistanceMeters();
 }
 
+double Route::GetTotalDistanceToSegmentMeters(size_t segIdx) const
+{
+  if (!IsValid())
+    return 0.0;
+  return m_routeSegments[segIdx].GetDistFromBeginningMeters();
+}
+
 double Route::GetCurrentDistanceFromBeginMeters() const
 {
   if (!IsValid())
@@ -532,7 +539,7 @@ std::string Route::DebugPrintTurns() const
   {
     auto const & turn = m_routeSegments[i].GetTurn();
 
-    // Always print first elemenst as Start.
+    // Always print first element as Start.
     if (i == 0 || !turn.IsTurnNone())
     {
       res += DebugPrint(mercator::ToLatLon(m_routeSegments[i].GetJunction()));
@@ -562,5 +569,13 @@ bool IsNormalTurn(TurnItem const & turn)
 string DebugPrint(Route const & r)
 {
   return DebugPrint(r.m_poly.GetPolyline());
+}
+
+std::pair<long, long> Route::GetSubrouteTotalTimeAndDistance(size_t subrouteIdx) const
+{
+  size_t endSegmentIdx = m_subrouteAttrs.at(subrouteIdx).GetEndSegmentIdx();
+
+  long distanceMeters = std::lround(GetTotalDistanceToSegmentMeters(endSegmentIdx));
+  return std::pair<long, long>(30 * 60, distanceMeters);
 }
 } // namespace routing

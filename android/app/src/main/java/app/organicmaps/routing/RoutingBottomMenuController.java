@@ -26,6 +26,7 @@ import androidx.annotation.IdRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import app.organicmaps.Framework;
@@ -39,6 +40,7 @@ import app.organicmaps.util.UiUtils;
 import app.organicmaps.widget.recycler.DotDividerItemDecoration;
 import app.organicmaps.widget.recycler.MultilineLayoutManager;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -79,6 +81,8 @@ final class RoutingBottomMenuController implements View.OnClickListener
   private final ImageView mActionIcon;
   @NonNull
   private final DotDividerItemDecoration mTransitViewDecorator;
+  @NonNull
+  private final RecyclerView mRoutePlanList;
 
   @Nullable
   private final RoutingBottomMenuListener mListener;
@@ -98,10 +102,11 @@ final class RoutingBottomMenuController implements View.OnClickListener
     TextView altitudeDifference = (TextView) getViewById(activity, frame, R.id.altitude_difference);
     TextView arrival = (TextView) getViewById(activity, frame, R.id.arrival);
     View actionFrame = getViewById(activity, frame, R.id.routing_action_frame);
+    RecyclerView routePlanList = (RecyclerView) getViewById(activity, frame, R.id.route_plan_list);
 
     return new RoutingBottomMenuController(activity, altitudeChartFrame, timeElevationLine, transitFrame,
                                            error, start, altitudeChart, time, altitudeDifference,
-                                           timeVehicle, arrival, actionFrame, listener);
+                                           timeVehicle, arrival, actionFrame, routePlanList, listener);
   }
 
   @NonNull
@@ -124,6 +129,7 @@ final class RoutingBottomMenuController implements View.OnClickListener
                                       @NonNull TextView timeVehicle,
                                       @Nullable TextView arrival,
                                       @NonNull View actionFrame,
+                                      @NonNull RecyclerView routePlanList,
                                       @Nullable RoutingBottomMenuListener listener)
   {
     mContext = context;
@@ -151,6 +157,9 @@ final class RoutingBottomMenuController implements View.OnClickListener
     Resources res = mContext.getResources();
     mTransitViewDecorator = new DotDividerItemDecoration(dividerDrawable, res.getDimensionPixelSize(R.dimen.margin_base),
                                                          res.getDimensionPixelSize(R.dimen.margin_half));
+    mRoutePlanList = routePlanList;
+    mRoutePlanList.setLayoutManager(new LinearLayoutManager(mContext));
+    //mRoutePlanList.addItemDecoration(mTransitViewDecorator);
   }
 
   void showAltitudeChartAndRoutingDetails()
@@ -188,7 +197,7 @@ final class RoutingBottomMenuController implements View.OnClickListener
     TextView totalTimeView = mTransitFrame.findViewById(R.id.total_time);
     totalTimeView.setText(RoutingController.formatRoutingTime(mContext, info.getTotalTime(),
                                                             R.dimen.text_size_routing_number));
-    View dotView = mTransitFrame.findViewById(R.id.dot);
+    View dotView = mTransitFrame.findViewById(R.id.dot2);
     View pedestrianIcon = mTransitFrame.findViewById(R.id.pedestrian_icon);
     TextView distanceView = mTransitFrame.findViewById(R.id.total_distance);
     UiUtils.showIf(info.getTotalPedestrianTimeInSec() > 0, dotView, pedestrianIcon, distanceView);
@@ -222,7 +231,7 @@ final class RoutingBottomMenuController implements View.OnClickListener
     totalTimeView.setText(mContext.getString(R.string.placepage_distance) + ": " +
                           totalLength.mDistanceStr + " " + totalLength.getUnitsStr(mContext));
 
-    UiUtils.hide(mTransitFrame, R.id.dot);
+    UiUtils.hide(mTransitFrame, R.id.dot2);
     UiUtils.hide(mTransitFrame, R.id.pedestrian_icon);
     UiUtils.hide(mTransitFrame, R.id.total_distance);
   }
@@ -353,6 +362,9 @@ final class RoutingBottomMenuController implements View.OnClickListener
 
   private void showRoutingDetails()
   {
+    // Show route plan info.
+    mRoutePlanList.setAdapter(new RoutePlanAdapter(mContext, Framework.nativeGetRoutePoints()));
+
     final RoutingInfo rinfo = RoutingController.get().getCachedRoutingInfo();
     if (rinfo == null)
     {

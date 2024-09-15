@@ -24,6 +24,8 @@ struct RouteMarkData
   bool m_isPassed = false;
   bool m_replaceWithMyPositionAfterRestart = false;
   m2::PointD m_position;
+  int m_timeSec = 0;
+  int m_distanceMeters = 0;
 };
 
 class RouteMarkPoint : public UserMark

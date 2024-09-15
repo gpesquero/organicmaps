@@ -363,11 +363,13 @@ public:
 
   size_t GetCurrentSubrouteIdx() const { return m_currentSubrouteIdx; }
   std::vector<SubrouteAttrs> const & GetSubroutes() const { return m_subrouteAttrs; }
+  std::pair<int, int> GetSubrouteTotalTimeAndDistance(size_t subrouteIdx) const;
 
   std::vector<double> const & GetSegDistanceMeters() const { return m_poly.GetSegDistanceMeters(); }
   bool IsValid() const { return m_poly.IsValid(); }
 
   double GetTotalDistanceMeters() const;
+  double GetTotalDistanceToSegmentMeters(size_t segIdx) const;
   double GetCurrentDistanceFromBeginMeters() const;
   double GetCurrentDistanceToEndMeters() const;
   double GetMercatorDistanceFromBegin() const;

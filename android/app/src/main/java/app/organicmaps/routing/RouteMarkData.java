@@ -3,6 +3,8 @@ package app.organicmaps.routing;
 import androidx.annotation.Keep;
 import androidx.annotation.Nullable;
 
+import app.organicmaps.util.Distance;
+
 /**
  * Represents RouteMarkData from core.
  */
@@ -23,11 +25,13 @@ public class RouteMarkData
   public final boolean mIsPassed;
   public final double mLat;
   public final double mLon;
+  public final long mTimeSec;
+  public final Distance mDistance;
 
   public RouteMarkData(@Nullable String title, @Nullable String subtitle,
                        @RoutePointInfo.RouteMarkType int pointType,
                        int intermediateIndex, boolean isVisible, boolean isMyPosition,
-                       boolean isPassed, double lat, double lon)
+                       boolean isPassed, double lat, double lon, long timeSec, Distance distance)
   {
     mTitle = title;
     mSubtitle = subtitle;
@@ -38,5 +42,7 @@ public class RouteMarkData
     mIsPassed = isPassed;
     mLat = lat;
     mLon = lon;
+    mTimeSec = timeSec;
+    mDistance = distance;
   }
 }

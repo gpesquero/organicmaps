@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <integer-array name="route_stop_icons">
+    <item>@drawable/route_point_1</item>
+    <item>@drawable/route_point_2</item>
+    <item>@drawable/route_point_3</item>
+    <item>@drawable/route_point_4</item>
+    <item>@drawable/route_point_5</item>
+    <item>@drawable/route_point_6</item>
+    <item>@drawable/route_point_7</item>
+    <item>@drawable/route_point_8</item>
+    <item>@drawable/route_point_9</item>
+    <item>@drawable/route_point_10</item>
+    <item>@drawable/route_point_11</item>
+    <item>@drawable/route_point_12</item>
+    <item>@drawable/route_point_13</item>
+    <item>@drawable/route_point_14</item>
+    <item>@drawable/route_point_15</item>
+    <item>@drawable/route_point_16</item>
+    <item>@drawable/route_point_17</item>
+    <item>@drawable/route_point_18</item>
+    <item>@drawable/route_point_19</item>
+    <item>@drawable/route_point_20</item>
+  </integer-array>
+</resources>
